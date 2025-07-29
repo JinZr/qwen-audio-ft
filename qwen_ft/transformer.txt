@@ -1,0 +1,595 @@
+Qwen2_5OmniForConditionalGeneration(
+  (thinker): Qwen2_5OmniThinkerForConditionalGeneration(
+    (audio_tower): Qwen2_5OmniAudioEncoder(
+      (conv1): Conv1d(128, 1280, kernel_size=(3,), stride=(1,), padding=(1,))
+      (conv2): Conv1d(1280, 1280, kernel_size=(3,), stride=(2,), padding=(1,))
+      (positional_embedding): SinusoidsPositionEmbedding()
+      (audio_bos_eos_token): Embedding(2, 3584)
+      (layers): ModuleList(
+        (0-31): 32 x Qwen2_5OmniAudioEncoderLayer(
+          (self_attn): Qwen2_5OmniAudioAttention(
+            (k_proj): Linear(in_features=1280, out_features=1280, bias=False)
+            (v_proj): Linear(in_features=1280, out_features=1280, bias=True)
+            (q_proj): Linear(in_features=1280, out_features=1280, bias=True)
+            (out_proj): Linear(in_features=1280, out_features=1280, bias=True)
+          )
+          (self_attn_layer_norm): LayerNorm((1280,), eps=1e-05, elementwise_affine=True)
+          (activation_fn): GELUActivation()
+          (fc1): Linear(in_features=1280, out_features=5120, bias=True)
+          (fc2): Linear(in_features=5120, out_features=1280, bias=True)
+          (final_layer_norm): LayerNorm((1280,), eps=1e-05, elementwise_affine=True)
+        )
+      )
+      (ln_post): LayerNorm((1280,), eps=1e-05, elementwise_affine=True)
+      (avg_pooler): AvgPool1d(kernel_size=(2,), stride=(2,), padding=(0,))
+      (proj): Linear(in_features=1280, out_features=3584, bias=True)
+    )
+    (visual): Qwen2_5OmniVisionEncoder(
+      (patch_embed): Qwen2_5_VisionPatchEmbed(
+        (proj): Conv3d(3, 1280, kernel_size=(2, 14, 14), stride=(2, 14, 14), bias=False)
+      )
+      (rotary_pos_emb): Qwen2_5_VisionRotaryEmbedding()
+      (blocks): ModuleList(
+        (0-31): 32 x Qwen2_5OmniVisionBlock(
+          (norm1): Qwen2RMSNorm((1280,), eps=1e-06)
+          (norm2): Qwen2RMSNorm((1280,), eps=1e-06)
+          (attn): Qwen2_5OmniVisionAttention(
+            (q): Linear(in_features=1280, out_features=1280, bias=True)
+            (k): Linear(in_features=1280, out_features=1280, bias=True)
+            (v): Linear(in_features=1280, out_features=1280, bias=True)
+            (proj): Linear(in_features=1280, out_features=1280, bias=True)
+          )
+          (mlp): Qwen2_5OmniMLP(
+            (gate_proj): Linear(in_features=1280, out_features=3420, bias=True)
+            (up_proj): Linear(in_features=1280, out_features=3420, bias=True)
+            (down_proj): Linear(in_features=3420, out_features=1280, bias=True)
+            (act_fn): SiLU()
+          )
+        )
+      )
+      (merger): Qwen2_5OmniPatchMerger(
+        (ln_q): Qwen2RMSNorm((1280,), eps=1e-06)
+        (mlp): Sequential(
+          (0): Linear(in_features=5120, out_features=5120, bias=True)
+          (1): GELU(approximate='none')
+          (2): Linear(in_features=5120, out_features=3584, bias=True)
+        )
+      )
+    )
+    (model): Qwen2_5OmniThinkerTextModel(
+      (embed_tokens): Embedding(152064, 3584)
+      (layers): ModuleList(
+        (0-27): 28 x Qwen2_5OmniDecoderLayer(
+          (self_attn): Qwen2_5OmniAttention(
+            (q_proj): Linear(in_features=3584, out_features=3584, bias=True)
+            (k_proj): Linear(in_features=3584, out_features=512, bias=True)
+            (v_proj): Linear(in_features=3584, out_features=512, bias=True)
+            (o_proj): Linear(in_features=3584, out_features=3584, bias=False)
+            (rotary_emb): Qwen2_5OmniRotaryEmbedding()
+          )
+          (mlp): Qwen2MLP(
+            (gate_proj): Linear(in_features=3584, out_features=18944, bias=False)
+            (up_proj): Linear(in_features=3584, out_features=18944, bias=False)
+            (down_proj): Linear(in_features=18944, out_features=3584, bias=False)
+            (act_fn): SiLU()
+          )
+          (input_layernorm): Qwen2RMSNorm((3584,), eps=1e-06)
+          (post_attention_layernorm): Qwen2RMSNorm((3584,), eps=1e-06)
+        )
+      )
+      (norm): Qwen2RMSNorm((3584,), eps=1e-06)
+      (rotary_emb): Qwen2_5OmniRotaryEmbedding()
+    )
+    (lm_head): Linear(in_features=3584, out_features=152064, bias=False)
+  )
+  (talker): Qwen2_5OmniTalkerForConditionalGeneration(
+    (thinker_to_talker_proj): Linear(in_features=3584, out_features=896, bias=True)
+    (model): Qwen2_5OmniTalkerModel(
+      (embed_tokens): Embedding(8448, 3584)
+      (layers): ModuleList(
+        (0-23): 24 x Qwen2_5OmniDecoderLayer(
+          (self_attn): Qwen2_5OmniAttention(
+            (q_proj): Linear(in_features=896, out_features=1536, bias=True)
+            (k_proj): Linear(in_features=896, out_features=512, bias=True)
+            (v_proj): Linear(in_features=896, out_features=512, bias=True)
+            (o_proj): Linear(in_features=1536, out_features=896, bias=False)
+            (rotary_emb): Qwen2_5OmniRotaryEmbedding()
+          )
+          (mlp): Qwen2MLP(
+            (gate_proj): Linear(in_features=896, out_features=18944, bias=False)
+            (up_proj): Linear(in_features=896, out_features=18944, bias=False)
+            (down_proj): Linear(in_features=18944, out_features=896, bias=False)
+            (act_fn): SiLU()
+          )
+          (input_layernorm): Qwen2RMSNorm((896,), eps=1e-06)
+          (post_attention_layernorm): Qwen2RMSNorm((896,), eps=1e-06)
+        )
+      )
+      (norm): Qwen2RMSNorm((896,), eps=1e-06)
+      (rotary_emb): Qwen2_5OmniRotaryEmbedding()
+    )
+    (codec_head): Linear(in_features=896, out_features=8448, bias=False)
+  )
+  (token2wav): Qwen2_5OmniToken2WavModel(
+    (code2wav_dit_model): Qwen2_5OmniToken2WavDiTModel(
+      (time_embed): DiTTimestepEmbedding(
+        (time_embed): SinusPositionEmbedding()
+        (time_mlp): ModuleList(
+          (0): Linear(in_features=256, out_features=1024, bias=True)
+          (1): SiLU()
+          (2): Linear(in_features=1024, out_features=1024, bias=True)
+        )
+      )
+      (text_embed): DiTCodecEmbedding(
+        (codec_embed): Embedding(8194, 512)
+      )
+      (input_embed): DiTInputEmbedding(
+        (proj): Linear(in_features=912, out_features=1024, bias=True)
+        (spk_encoder): ECAPA_TimeDelayNet(
+          (blocks): ModuleList(
+            (0): TimeDelayNetBlock(
+              (conv): Conv1d(80, 256, kernel_size=(5,), stride=(1,), padding=same, padding_mode=reflect)
+              (activation): ReLU()
+            )
+            (1): SqueezeExcitationRes2NetBlock(
+              (tdnn1): TimeDelayNetBlock(
+                (conv): Conv1d(256, 256, kernel_size=(1,), stride=(1,), padding=same, padding_mode=reflect)
+                (activation): ReLU()
+              )
+              (res2net_block): Res2NetBlock(
+                (blocks): ModuleList(
+                  (0): TimeDelayNetBlock(
+                    (conv): Conv1d(128, 128, kernel_size=(3,), stride=(1,), padding=same, dilation=(2,), padding_mode=reflect)
+                    (activation): ReLU()
+                  )
+                )
+              )
+              (tdnn2): TimeDelayNetBlock(
+                (conv): Conv1d(256, 256, kernel_size=(1,), stride=(1,), padding=same, padding_mode=reflect)
+                (activation): ReLU()
+              )
+              (se_block): SqueezeExcitationBlock(
+                (conv1): Conv1d(256, 64, kernel_size=(1,), stride=(1,), padding=same, padding_mode=reflect)
+                (relu): ReLU(inplace=True)
+                (conv2): Conv1d(64, 256, kernel_size=(1,), stride=(1,), padding=same, padding_mode=reflect)
+                (sigmoid): Sigmoid()
+              )
+            )
+            (2): SqueezeExcitationRes2NetBlock(
+              (tdnn1): TimeDelayNetBlock(
+                (conv): Conv1d(256, 256, kernel_size=(1,), stride=(1,), padding=same, padding_mode=reflect)
+                (activation): ReLU()
+              )
+              (res2net_block): Res2NetBlock(
+                (blocks): ModuleList(
+                  (0): TimeDelayNetBlock(
+                    (conv): Conv1d(128, 128, kernel_size=(3,), stride=(1,), padding=same, dilation=(3,), padding_mode=reflect)
+                    (activation): ReLU()
+                  )
+                )
+              )
+              (tdnn2): TimeDelayNetBlock(
+                (conv): Conv1d(256, 256, kernel_size=(1,), stride=(1,), padding=same, padding_mode=reflect)
+                (activation): ReLU()
+              )
+              (se_block): SqueezeExcitationBlock(
+                (conv1): Conv1d(256, 64, kernel_size=(1,), stride=(1,), padding=same, padding_mode=reflect)
+                (relu): ReLU(inplace=True)
+                (conv2): Conv1d(64, 256, kernel_size=(1,), stride=(1,), padding=same, padding_mode=reflect)
+                (sigmoid): Sigmoid()
+              )
+            )
+            (3): SqueezeExcitationRes2NetBlock(
+              (tdnn1): TimeDelayNetBlock(
+                (conv): Conv1d(256, 256, kernel_size=(1,), stride=(1,), padding=same, padding_mode=reflect)
+                (activation): ReLU()
+              )
+              (res2net_block): Res2NetBlock(
+                (blocks): ModuleList(
+                  (0): TimeDelayNetBlock(
+                    (conv): Conv1d(128, 128, kernel_size=(3,), stride=(1,), padding=same, dilation=(4,), padding_mode=reflect)
+                    (activation): ReLU()
+                  )
+                )
+              )
+              (tdnn2): TimeDelayNetBlock(
+                (conv): Conv1d(256, 256, kernel_size=(1,), stride=(1,), padding=same, padding_mode=reflect)
+                (activation): ReLU()
+              )
+              (se_block): SqueezeExcitationBlock(
+                (conv1): Conv1d(256, 64, kernel_size=(1,), stride=(1,), padding=same, padding_mode=reflect)
+                (relu): ReLU(inplace=True)
+                (conv2): Conv1d(64, 256, kernel_size=(1,), stride=(1,), padding=same, padding_mode=reflect)
+                (sigmoid): Sigmoid()
+              )
+            )
+          )
+          (mfa): TimeDelayNetBlock(
+            (conv): Conv1d(768, 768, kernel_size=(1,), stride=(1,), padding=same, padding_mode=reflect)
+            (activation): ReLU()
+          )
+          (asp): AttentiveStatisticsPooling(
+            (tdnn): TimeDelayNetBlock(
+              (conv): Conv1d(2304, 64, kernel_size=(1,), stride=(1,), padding=same, padding_mode=reflect)
+              (activation): ReLU()
+            )
+            (tanh): Tanh()
+            (conv): Conv1d(64, 768, kernel_size=(1,), stride=(1,), padding=same, padding_mode=reflect)
+          )
+          (fc): Conv1d(1536, 128, kernel_size=(1,), stride=(1,), padding=same, padding_mode=reflect)
+        )
+      )
+      (rotary_embed): Qwen2_5OmniDiTRotaryEmbedding()
+      (transformer_blocks): ModuleList(
+        (0-21): 22 x DiTDecoderLayer(
+          (attn_norm): Qwen2_5_OmniAdaLayerNormZero(
+            (silu): SiLU()
+            (linear): Linear(in_features=1024, out_features=6144, bias=True)
+            (norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=False)
+          )
+          (attn): DiTAttention(
+            (to_q): Linear(in_features=1024, out_features=1024, bias=True)
+            (to_k): Linear(in_features=1024, out_features=1024, bias=True)
+            (to_v): Linear(in_features=1024, out_features=1024, bias=True)
+            (to_out): ModuleList(
+              (0): Linear(in_features=1024, out_features=1024, bias=True)
+              (1): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (ff_norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=False)
+          (ff): DiTMLP(
+            (ff): ModuleList(
+              (0): Linear(in_features=1024, out_features=2048, bias=True)
+              (1): GELU(approximate='tanh')
+              (2): Dropout(p=0.1, inplace=False)
+              (3): Linear(in_features=2048, out_features=1024, bias=True)
+            )
+          )
+        )
+      )
+      (norm_out): Qwen2_5_OmniAdaLayerNormZero_Final(
+        (silu): SiLU()
+        (linear): Linear(in_features=1024, out_features=2048, bias=True)
+        (norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=False)
+      )
+      (proj_out): Linear(in_features=1024, out_features=80, bias=True)
+    )
+    (code2wav_bigvgan_model): Qwen2_5OmniToken2WavBigVGANModel(
+      (conv_pre): Conv1d(80, 1536, kernel_size=(7,), stride=(1,), padding=(3,))
+      (ups): ModuleList(
+        (0): ModuleList(
+          (0): ConvTranspose1d(1536, 768, kernel_size=(11,), stride=(5,), padding=(3,))
+        )
+        (1): ModuleList(
+          (0): ConvTranspose1d(768, 384, kernel_size=(7,), stride=(3,), padding=(2,))
+        )
+        (2): ModuleList(
+          (0): ConvTranspose1d(384, 192, kernel_size=(4,), stride=(2,), padding=(1,))
+        )
+        (3): ModuleList(
+          (0): ConvTranspose1d(192, 96, kernel_size=(4,), stride=(2,), padding=(1,))
+        )
+        (4): ModuleList(
+          (0): ConvTranspose1d(96, 48, kernel_size=(4,), stride=(2,), padding=(1,))
+        )
+        (5): ModuleList(
+          (0): ConvTranspose1d(48, 24, kernel_size=(4,), stride=(2,), padding=(1,))
+        )
+      )
+      (resblocks): ModuleList(
+        (0): AMPBlock(
+          (convs1): ModuleList(
+            (0): Conv1d(768, 768, kernel_size=(3,), stride=(1,), padding=(1,))
+            (1): Conv1d(768, 768, kernel_size=(3,), stride=(1,), padding=(3,), dilation=(3,))
+            (2): Conv1d(768, 768, kernel_size=(3,), stride=(1,), padding=(5,), dilation=(5,))
+          )
+          (convs2): ModuleList(
+            (0-2): 3 x Conv1d(768, 768, kernel_size=(3,), stride=(1,), padding=(1,))
+          )
+          (activations): ModuleList(
+            (0-5): 6 x TorchActivation1d(
+              (act): SnakeBeta()
+              (upsample): UpSample1d()
+              (downsample): DownSample1d()
+            )
+          )
+        )
+        (1): AMPBlock(
+          (convs1): ModuleList(
+            (0): Conv1d(768, 768, kernel_size=(7,), stride=(1,), padding=(3,))
+            (1): Conv1d(768, 768, kernel_size=(7,), stride=(1,), padding=(9,), dilation=(3,))
+            (2): Conv1d(768, 768, kernel_size=(7,), stride=(1,), padding=(15,), dilation=(5,))
+          )
+          (convs2): ModuleList(
+            (0-2): 3 x Conv1d(768, 768, kernel_size=(7,), stride=(1,), padding=(3,))
+          )
+          (activations): ModuleList(
+            (0-5): 6 x TorchActivation1d(
+              (act): SnakeBeta()
+              (upsample): UpSample1d()
+              (downsample): DownSample1d()
+            )
+          )
+        )
+        (2): AMPBlock(
+          (convs1): ModuleList(
+            (0): Conv1d(768, 768, kernel_size=(11,), stride=(1,), padding=(5,))
+            (1): Conv1d(768, 768, kernel_size=(11,), stride=(1,), padding=(15,), dilation=(3,))
+            (2): Conv1d(768, 768, kernel_size=(11,), stride=(1,), padding=(25,), dilation=(5,))
+          )
+          (convs2): ModuleList(
+            (0-2): 3 x Conv1d(768, 768, kernel_size=(11,), stride=(1,), padding=(5,))
+          )
+          (activations): ModuleList(
+            (0-5): 6 x TorchActivation1d(
+              (act): SnakeBeta()
+              (upsample): UpSample1d()
+              (downsample): DownSample1d()
+            )
+          )
+        )
+        (3): AMPBlock(
+          (convs1): ModuleList(
+            (0): Conv1d(384, 384, kernel_size=(3,), stride=(1,), padding=(1,))
+            (1): Conv1d(384, 384, kernel_size=(3,), stride=(1,), padding=(3,), dilation=(3,))
+            (2): Conv1d(384, 384, kernel_size=(3,), stride=(1,), padding=(5,), dilation=(5,))
+          )
+          (convs2): ModuleList(
+            (0-2): 3 x Conv1d(384, 384, kernel_size=(3,), stride=(1,), padding=(1,))
+          )
+          (activations): ModuleList(
+            (0-5): 6 x TorchActivation1d(
+              (act): SnakeBeta()
+              (upsample): UpSample1d()
+              (downsample): DownSample1d()
+            )
+          )
+        )
+        (4): AMPBlock(
+          (convs1): ModuleList(
+            (0): Conv1d(384, 384, kernel_size=(7,), stride=(1,), padding=(3,))
+            (1): Conv1d(384, 384, kernel_size=(7,), stride=(1,), padding=(9,), dilation=(3,))
+            (2): Conv1d(384, 384, kernel_size=(7,), stride=(1,), padding=(15,), dilation=(5,))
+          )
+          (convs2): ModuleList(
+            (0-2): 3 x Conv1d(384, 384, kernel_size=(7,), stride=(1,), padding=(3,))
+          )
+          (activations): ModuleList(
+            (0-5): 6 x TorchActivation1d(
+              (act): SnakeBeta()
+              (upsample): UpSample1d()
+              (downsample): DownSample1d()
+            )
+          )
+        )
+        (5): AMPBlock(
+          (convs1): ModuleList(
+            (0): Conv1d(384, 384, kernel_size=(11,), stride=(1,), padding=(5,))
+            (1): Conv1d(384, 384, kernel_size=(11,), stride=(1,), padding=(15,), dilation=(3,))
+            (2): Conv1d(384, 384, kernel_size=(11,), stride=(1,), padding=(25,), dilation=(5,))
+          )
+          (convs2): ModuleList(
+            (0-2): 3 x Conv1d(384, 384, kernel_size=(11,), stride=(1,), padding=(5,))
+          )
+          (activations): ModuleList(
+            (0-5): 6 x TorchActivation1d(
+              (act): SnakeBeta()
+              (upsample): UpSample1d()
+              (downsample): DownSample1d()
+            )
+          )
+        )
+        (6): AMPBlock(
+          (convs1): ModuleList(
+            (0): Conv1d(192, 192, kernel_size=(3,), stride=(1,), padding=(1,))
+            (1): Conv1d(192, 192, kernel_size=(3,), stride=(1,), padding=(3,), dilation=(3,))
+            (2): Conv1d(192, 192, kernel_size=(3,), stride=(1,), padding=(5,), dilation=(5,))
+          )
+          (convs2): ModuleList(
+            (0-2): 3 x Conv1d(192, 192, kernel_size=(3,), stride=(1,), padding=(1,))
+          )
+          (activations): ModuleList(
+            (0-5): 6 x TorchActivation1d(
+              (act): SnakeBeta()
+              (upsample): UpSample1d()
+              (downsample): DownSample1d()
+            )
+          )
+        )
+        (7): AMPBlock(
+          (convs1): ModuleList(
+            (0): Conv1d(192, 192, kernel_size=(7,), stride=(1,), padding=(3,))
+            (1): Conv1d(192, 192, kernel_size=(7,), stride=(1,), padding=(9,), dilation=(3,))
+            (2): Conv1d(192, 192, kernel_size=(7,), stride=(1,), padding=(15,), dilation=(5,))
+          )
+          (convs2): ModuleList(
+            (0-2): 3 x Conv1d(192, 192, kernel_size=(7,), stride=(1,), padding=(3,))
+          )
+          (activations): ModuleList(
+            (0-5): 6 x TorchActivation1d(
+              (act): SnakeBeta()
+              (upsample): UpSample1d()
+              (downsample): DownSample1d()
+            )
+          )
+        )
+        (8): AMPBlock(
+          (convs1): ModuleList(
+            (0): Conv1d(192, 192, kernel_size=(11,), stride=(1,), padding=(5,))
+            (1): Conv1d(192, 192, kernel_size=(11,), stride=(1,), padding=(15,), dilation=(3,))
+            (2): Conv1d(192, 192, kernel_size=(11,), stride=(1,), padding=(25,), dilation=(5,))
+          )
+          (convs2): ModuleList(
+            (0-2): 3 x Conv1d(192, 192, kernel_size=(11,), stride=(1,), padding=(5,))
+          )
+          (activations): ModuleList(
+            (0-5): 6 x TorchActivation1d(
+              (act): SnakeBeta()
+              (upsample): UpSample1d()
+              (downsample): DownSample1d()
+            )
+          )
+        )
+        (9): AMPBlock(
+          (convs1): ModuleList(
+            (0): Conv1d(96, 96, kernel_size=(3,), stride=(1,), padding=(1,))
+            (1): Conv1d(96, 96, kernel_size=(3,), stride=(1,), padding=(3,), dilation=(3,))
+            (2): Conv1d(96, 96, kernel_size=(3,), stride=(1,), padding=(5,), dilation=(5,))
+          )
+          (convs2): ModuleList(
+            (0-2): 3 x Conv1d(96, 96, kernel_size=(3,), stride=(1,), padding=(1,))
+          )
+          (activations): ModuleList(
+            (0-5): 6 x TorchActivation1d(
+              (act): SnakeBeta()
+              (upsample): UpSample1d()
+              (downsample): DownSample1d()
+            )
+          )
+        )
+        (10): AMPBlock(
+          (convs1): ModuleList(
+            (0): Conv1d(96, 96, kernel_size=(7,), stride=(1,), padding=(3,))
+            (1): Conv1d(96, 96, kernel_size=(7,), stride=(1,), padding=(9,), dilation=(3,))
+            (2): Conv1d(96, 96, kernel_size=(7,), stride=(1,), padding=(15,), dilation=(5,))
+          )
+          (convs2): ModuleList(
+            (0-2): 3 x Conv1d(96, 96, kernel_size=(7,), stride=(1,), padding=(3,))
+          )
+          (activations): ModuleList(
+            (0-5): 6 x TorchActivation1d(
+              (act): SnakeBeta()
+              (upsample): UpSample1d()
+              (downsample): DownSample1d()
+            )
+          )
+        )
+        (11): AMPBlock(
+          (convs1): ModuleList(
+            (0): Conv1d(96, 96, kernel_size=(11,), stride=(1,), padding=(5,))
+            (1): Conv1d(96, 96, kernel_size=(11,), stride=(1,), padding=(15,), dilation=(3,))
+            (2): Conv1d(96, 96, kernel_size=(11,), stride=(1,), padding=(25,), dilation=(5,))
+          )
+          (convs2): ModuleList(
+            (0-2): 3 x Conv1d(96, 96, kernel_size=(11,), stride=(1,), padding=(5,))
+          )
+          (activations): ModuleList(
+            (0-5): 6 x TorchActivation1d(
+              (act): SnakeBeta()
+              (upsample): UpSample1d()
+              (downsample): DownSample1d()
+            )
+          )
+        )
+        (12): AMPBlock(
+          (convs1): ModuleList(
+            (0): Conv1d(48, 48, kernel_size=(3,), stride=(1,), padding=(1,))
+            (1): Conv1d(48, 48, kernel_size=(3,), stride=(1,), padding=(3,), dilation=(3,))
+            (2): Conv1d(48, 48, kernel_size=(3,), stride=(1,), padding=(5,), dilation=(5,))
+          )
+          (convs2): ModuleList(
+            (0-2): 3 x Conv1d(48, 48, kernel_size=(3,), stride=(1,), padding=(1,))
+          )
+          (activations): ModuleList(
+            (0-5): 6 x TorchActivation1d(
+              (act): SnakeBeta()
+              (upsample): UpSample1d()
+              (downsample): DownSample1d()
+            )
+          )
+        )
+        (13): AMPBlock(
+          (convs1): ModuleList(
+            (0): Conv1d(48, 48, kernel_size=(7,), stride=(1,), padding=(3,))
+            (1): Conv1d(48, 48, kernel_size=(7,), stride=(1,), padding=(9,), dilation=(3,))
+            (2): Conv1d(48, 48, kernel_size=(7,), stride=(1,), padding=(15,), dilation=(5,))
+          )
+          (convs2): ModuleList(
+            (0-2): 3 x Conv1d(48, 48, kernel_size=(7,), stride=(1,), padding=(3,))
+          )
+          (activations): ModuleList(
+            (0-5): 6 x TorchActivation1d(
+              (act): SnakeBeta()
+              (upsample): UpSample1d()
+              (downsample): DownSample1d()
+            )
+          )
+        )
+        (14): AMPBlock(
+          (convs1): ModuleList(
+            (0): Conv1d(48, 48, kernel_size=(11,), stride=(1,), padding=(5,))
+            (1): Conv1d(48, 48, kernel_size=(11,), stride=(1,), padding=(15,), dilation=(3,))
+            (2): Conv1d(48, 48, kernel_size=(11,), stride=(1,), padding=(25,), dilation=(5,))
+          )
+          (convs2): ModuleList(
+            (0-2): 3 x Conv1d(48, 48, kernel_size=(11,), stride=(1,), padding=(5,))
+          )
+          (activations): ModuleList(
+            (0-5): 6 x TorchActivation1d(
+              (act): SnakeBeta()
+              (upsample): UpSample1d()
+              (downsample): DownSample1d()
+            )
+          )
+        )
+        (15): AMPBlock(
+          (convs1): ModuleList(
+            (0): Conv1d(24, 24, kernel_size=(3,), stride=(1,), padding=(1,))
+            (1): Conv1d(24, 24, kernel_size=(3,), stride=(1,), padding=(3,), dilation=(3,))
+            (2): Conv1d(24, 24, kernel_size=(3,), stride=(1,), padding=(5,), dilation=(5,))
+          )
+          (convs2): ModuleList(
+            (0-2): 3 x Conv1d(24, 24, kernel_size=(3,), stride=(1,), padding=(1,))
+          )
+          (activations): ModuleList(
+            (0-5): 6 x TorchActivation1d(
+              (act): SnakeBeta()
+              (upsample): UpSample1d()
+              (downsample): DownSample1d()
+            )
+          )
+        )
+        (16): AMPBlock(
+          (convs1): ModuleList(
+            (0): Conv1d(24, 24, kernel_size=(7,), stride=(1,), padding=(3,))
+            (1): Conv1d(24, 24, kernel_size=(7,), stride=(1,), padding=(9,), dilation=(3,))
+            (2): Conv1d(24, 24, kernel_size=(7,), stride=(1,), padding=(15,), dilation=(5,))
+          )
+          (convs2): ModuleList(
+            (0-2): 3 x Conv1d(24, 24, kernel_size=(7,), stride=(1,), padding=(3,))
+          )
+          (activations): ModuleList(
+            (0-5): 6 x TorchActivation1d(
+              (act): SnakeBeta()
+              (upsample): UpSample1d()
+              (downsample): DownSample1d()
+            )
+          )
+        )
+        (17): AMPBlock(
+          (convs1): ModuleList(
+            (0): Conv1d(24, 24, kernel_size=(11,), stride=(1,), padding=(5,))
+            (1): Conv1d(24, 24, kernel_size=(11,), stride=(1,), padding=(15,), dilation=(3,))
+            (2): Conv1d(24, 24, kernel_size=(11,), stride=(1,), padding=(25,), dilation=(5,))
+          )
+          (convs2): ModuleList(
+            (0-2): 3 x Conv1d(24, 24, kernel_size=(11,), stride=(1,), padding=(5,))
+          )
+          (activations): ModuleList(
+            (0-5): 6 x TorchActivation1d(
+              (act): SnakeBeta()
+              (upsample): UpSample1d()
+              (downsample): DownSample1d()
+            )
+          )
+        )
+      )
+      (activation_post): TorchActivation1d(
+        (act): SnakeBeta()
+        (upsample): UpSample1d()
+        (downsample): DownSample1d()
+      )
+      (conv_post): Conv1d(24, 1, kernel_size=(7,), stride=(1,), padding=(3,), bias=False)
+    )
+  )
+)
