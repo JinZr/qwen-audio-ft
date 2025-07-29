@@ -284,20 +284,13 @@ def main(
                         attention_mask=attention_mask,
                         feature_attention_mask=feature_attention_mask,
                     )
-                    print(logits)
-                    exit()
                 all_logits.extend(logits.to(io_device))
                 pred_logging.extend(torch.argmax(F.softmax(logits, dim=-1), dim=-1))
                 all_labels.extend(labels)
                 label_logging.extend(labels)
 
-            print(all_labels)
-            print(all_logits)
             all_logits = torch.stack(all_logits)
             all_labels = torch.stack(all_labels)
-            print(all_labels)
-            print(all_logits)
-            exit()
             loss = loss_fn(all_logits, all_labels)
             loss_batch += loss.item()
             scaler.scale(loss).backward()
