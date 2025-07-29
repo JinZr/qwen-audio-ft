@@ -30,10 +30,8 @@ class TransformerWithHead(PreTrainedModel):
         hidden_size = getattr(
             getattr(getattr(config, "thinker_config"), "text_config"), "hidden_size"
         )
-        self.diagnosis = nn.Linear(hidden_size, self.num_class).to(
-            lm.thinker.model.dtype
-        )
-        self.score = nn.Linear(hidden_size, 1).to(lm.thinker.model.dtype)
+        self.diagnosis = nn.Linear(hidden_size, self.num_class)
+        self.score = nn.Linear(hidden_size, 1)
         # torch.nn.init.normal_(self.score.weight, std=0.0)
         # torch.nn.init.normal_(self.diagnosis.weight, std=0.0)
 
@@ -75,24 +73,20 @@ class TransformerWithHead(PreTrainedModel):
         # input_ids = input_ids.to(self.transformer.device)
 
         # Forward through the backbone
-        with torch.no_grad():
-            transformer_outputs = self.transformer(
-                input_ids=input_ids,
-                input_features=input_features,
-                attention_mask=attention_mask,
-                feature_attention_mask=feature_attention_mask,
-                output_hidden_states=True,
-            ).hidden_states[-1] # [batch_size, f_len, 3000]
+        transformer_outputs = self.transformer(
+            input_ids=input_ids,
+            input_features=input_features,
+            attention_mask=attention_mask,
+            feature_attention_mask=feature_attention_mask,
+            output_hidden_states=True,
+        ).hidden_states[-1]  # [batch_size, seq_len, hidden_size]
 
         # input_lens = (attention_mask != 0).sum(dim=-1)
 
         hidden_states = transformer_outputs.mean(1)
 
         # Classification head
-        self.diagnosis.to(hidden_states.device)
         logits = self.diagnosis(hidden_states)
-
-        self.score.to(hidden_states.device)
         scores = self.score(hidden_states)
 
         return logits, scores, hidden_states

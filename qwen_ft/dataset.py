@@ -104,15 +104,16 @@ def tokenize_dataset(
             padding=True,
             use_audio_in_video=True,
         )
-        # print(inputs["input_ids"].shape)
-        # print(inputs["attention_mask"].shape)
-        # print(inputs["feature_attention_mask"].shape)
-        # print(inputs["input_features"].shape)
-        # exit()
 
-        return inputs
+        data = {k: v[0].tolist() for k, v in inputs.items()}
+        data["query"] = query
+        for key in ("severe_osa", "sr_level", "label"):
+            if key in sample:
+                data[key] = sample[key]
 
-    ds = raw_ds.map(process_function, batched=False, num_proc=4)
+        return data
+
+    ds = raw_ds.map(process_function, batched=False)
     return ds
 
 
